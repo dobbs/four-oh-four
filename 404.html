@@ -1,0 +1,95 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>four oh four</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>➡</text></svg>">
+<style>
+ nav a {display: block;}
+ main .hero {font-size: 100pt; font-weight: bold;}
+</style>
+<nav>
+  <a href="/">home</a>
+  <a href="/foo">/foo</a>
+  <a href="/bar">/bar</a>
+  <a href="/baz">/baz</a>
+</nav>
+<main id="main"></main>
+<template data-id="/">
+  <h1>(ab)Using HTTP 404</h1>
+  <p>
+
+    Hypertext Transfer Protocol (HTTP) defines the 404 response code
+    to enable a web server to indicate that the server is operational
+    and that the requested resource was not found.
+
+    See <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-10.4.5">
+    RFC 2616 10.4.5 404 Not Found</a>.
+
+  </p>
+  <p>
+
+    Some webservers offer a feature for authors to provide nicely
+    styled 404 pages by creating a page named 404.html. GitHub Pages
+    follows this convention.
+
+  </p>
+  <p>
+
+    This web site holds only a single web page named
+    <a href="404.html">404.html</a>. Ironically, this is the only page
+    which will return a 200 response code.
+
+  </p>
+  <p>
+
+    We have instrumented this page with a tiny javascript program that
+    inspects the <code>location.pathname</code> and displays an html template
+    bearing an id that matches the pathname.
+
+    See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location/pathname">
+      MDN location</a>.
+
+    See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template">
+      MDN template</a>.
+
+  </p>
+  <p>
+
+    We have also added templates with ids for <code>/foo</code>,
+    <code>/bar</code>, and <code>/baz</code> to sketch how we might offer
+    different tools or information depending on the requested pathname.
+
+  </p>
+  <p>
+
+    With this proof-of-concept, we have the capability to replace any
+    web application that relies on pathnames with a single page
+    javascript application.
+
+  </p>
+  <p>
+
+    <strong>But this is probably a terrible idea.</strong>
+
+  </p>
+
+</template>
+<template data-id="/404.html">
+<h1>You found the only web page on this site, 404.html!</h1>
+</template>
+<template data-id="/foo"><div class="hero">FOO</div></template>
+<template data-id="/bar"><div class="hero">BAR</div></template>
+<template data-id="/baz"><div class="hero">BAZ</div></template>
+<script type="module">
+ const $ = (s, el=document) => el.querySelector(s)
+ const $$ = (s, el=document) => Array.from(el.querySelectorAll(s))
+
+ let {pathname} = window.location
+ pathname = pathname.replace(/\`/g, "")
+ let template = $(`[data-id="${pathname}"]`)
+ if (!template) {
+   window.main.innerHTML = '<div class="hero">Not Found</div>'
+ } else {
+   window.main.innerHTML = ''
+   window.main.appendChild(template.content.cloneNode(true))
+ }
+</script>
