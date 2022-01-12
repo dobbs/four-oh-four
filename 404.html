@@ -85,7 +85,7 @@
 
  let {pathname} = window.location
  pathname = pathname.replace(/\`/g, "")
- let template = $(`[data-id="${pathname}"]`)
+ let template = $(`[data-id$="${pathname}"]`)
  if (!template) {
    window.main.innerHTML = '<div class="hero">Not Found</div>'
  } else {
