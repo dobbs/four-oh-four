@@ -13,7 +13,7 @@
   <a href="/baz">/baz</a>
 </nav>
 <main id="main"></main>
-<template data-id="/">
+<template data-pathname="/">
   <h1>(ab)Using HTTP 404</h1>
   <p>
 
@@ -73,19 +73,20 @@
   </p>
 
 </template>
-<template data-id="/404.html">
+<template data-pathname="/404.html">
 <h1>You found the only web page on this site, 404.html!</h1>
 </template>
-<template data-id="/foo"><div class="hero">FOO</div></template>
-<template data-id="/bar"><div class="hero">BAR</div></template>
-<template data-id="/baz"><div class="hero">BAZ</div></template>
+<template data-pathname="/foo"><div class="hero">FOO</div></template>
+<template data-pathname="/bar"><div class="hero">BAR</div></template>
+<template data-pathname="/baz"><div class="hero">BAZ</div></template>
 <script type="module">
  const $ = (s, el=document) => el.querySelector(s)
  const $$ = (s, el=document) => Array.from(el.querySelectorAll(s))
 
  let {pathname} = window.location
  pathname = pathname.replace(/\`/g, "")
- let template = $(`[data-id$="${pathname}"]`)
+ let template = $$('template[data-pathname]')
+   .find(T => pathname.endsWith(T.dataset.pathname))
  if (!template) {
    window.main.innerHTML = '<div class="hero">Not Found</div>'
  } else {
